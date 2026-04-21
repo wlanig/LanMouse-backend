@@ -44,12 +44,14 @@ CREATE TABLE IF NOT EXISTS users (
     id_card VARCHAR(18) COMMENT '身份证号(加密存储)',
     id_card_hash VARCHAR(64) NOT NULL COMMENT '身份证号哈希',
     user_group_id INT NOT NULL DEFAULT 1 COMMENT '用户组ID',
+    openid VARCHAR(100) COMMENT '微信openid',
     status TINYINT NOT NULL DEFAULT 1 COMMENT '状态: 0-禁用 1-正常',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_users_phone (phone),
     INDEX idx_users_id_card_hash (id_card_hash),
     INDEX idx_users_user_group (user_group_id),
+    INDEX idx_users_openid (openid),
     INDEX idx_users_status (status),
     CONSTRAINT fk_users_user_group FOREIGN KEY (user_group_id) REFERENCES user_groups(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
@@ -65,22 +67,20 @@ CREATE TABLE IF NOT EXISTS devices (
     ios_device_id VARCHAR(100) COMMENT 'iOS设备ID',
     device_name VARCHAR(100) NOT NULL COMMENT '设备名称',
     device_model VARCHAR(50) COMMENT '设备型号',
-    os_type VARCHAR(20) NOT NULL COMMENT '操作系统类型: ios/android',
+    os_type VARCHAR(20) NOT NULL COMMENT '操作系统类型: ios/android/windows',
     os_version VARCHAR(20) COMMENT '系统版本',
     last_ip VARCHAR(45) COMMENT '最后连接IP',
     last_active_at DATETIME COMMENT '最后活跃时间',
-    bind_token VARCHAR(64) UNIQUE COMMENT '绑定令牌',
-    bind_token_expire DATETIME COMMENT '令牌过期时间',
     status TINYINT NOT NULL DEFAULT 0 COMMENT '状态: 0-未激活 1-正常 2-冻结',
+    bind_token VARCHAR(64) UNIQUE COMMENT '绑定令牌',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_devices_imei1 (imei1),
     INDEX idx_devices_ios (ios_device_id),
     INDEX idx_devices_user (user_id),
     INDEX idx_devices_bind_token (bind_token),
     INDEX idx_devices_status (status),
     CONSTRAINT fk_devices_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='手机设备表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备表';
 
 -- =====================================================
 -- 订阅表
@@ -90,23 +90,21 @@ CREATE TABLE IF NOT EXISTS subscriptions (
     user_id BIGINT NOT NULL COMMENT '用户ID',
     device_id BIGINT NOT NULL COMMENT '设备ID',
     order_no VARCHAR(64) NOT NULL UNIQUE COMMENT '订单号',
-    user_group_id INT COMMENT '订购时的用户组',
     start_date DATE NOT NULL COMMENT '有效期开始',
     end_date DATE NOT NULL COMMENT '有效期结束',
     amount DECIMAL(10,2) NOT NULL COMMENT '应付金额',
     discount_amount DECIMAL(10,2) DEFAULT 0 COMMENT '优惠金额',
     payment_method VARCHAR(20) COMMENT '支付方式: alipay/wechat',
     payment_status VARCHAR(20) NOT NULL DEFAULT 'pending' COMMENT '支付状态: pending/paid/refunded/cancelled',
-    paid_at DATETIME COMMENT '支付时间',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_subs_user (user_id),
     INDEX idx_subs_device (device_id),
     INDEX idx_subs_order (order_no),
     INDEX idx_subs_end_date (end_date),
     INDEX idx_subs_payment_status (payment_status),
     CONSTRAINT fk_subs_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_subs_device FOREIGN KEY (device_id) REFERENCES devices(id),
-    CONSTRAINT fk_subs_user_group FOREIGN KEY (user_group_id) REFERENCES user_groups(id)
+    CONSTRAINT fk_subs_device FOREIGN KEY (device_id) REFERENCES devices(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订阅表';
 
 -- =====================================================
@@ -114,21 +112,19 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 -- =====================================================
 CREATE TABLE IF NOT EXISTS payment_qr_codes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
+    qr_code VARCHAR(500) COMMENT '二维码内容',
     order_no VARCHAR(64) NOT NULL COMMENT '关联订单号',
+    amount DECIMAL(10,2) NOT NULL COMMENT '金额',
     user_id BIGINT NOT NULL COMMENT '用户ID',
     device_id BIGINT NOT NULL COMMENT '设备ID',
-    amount DECIMAL(10,2) NOT NULL COMMENT '金额',
-    qr_code_url VARCHAR(500) COMMENT '二维码链接',
-    qr_code_data TEXT COMMENT '二维码原始数据',
-    payment_channel VARCHAR(20) COMMENT '支付渠道: alipay/wechat',
-    status VARCHAR(20) NOT NULL DEFAULT 'pending' COMMENT '状态: pending/paid/expired/cancelled',
-    expire_time DATETIME NOT NULL COMMENT '过期时间',
-    paid_time DATETIME COMMENT '支付时间',
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' COMMENT '状态: pending/paid/expired',
+    expired_at DATETIME COMMENT '过期时间',
+    paid_at DATETIME COMMENT '支付时间',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_qr_order (order_no),
     INDEX idx_qr_user (user_id),
     INDEX idx_qr_status (status),
-    INDEX idx_qr_expire_time (expire_time),
     CONSTRAINT fk_qr_user FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_qr_device FOREIGN KEY (device_id) REFERENCES devices(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付二维码表';
