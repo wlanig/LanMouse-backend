@@ -62,6 +62,7 @@
     "files": [
       "main.js",
       "preload.js",
+      "tcp_server.js",
       "index.html",
       "renderer/**/*",
       "mouse_controller.py",
