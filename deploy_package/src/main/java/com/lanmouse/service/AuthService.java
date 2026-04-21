@@ -18,4 +18,9 @@ public interface AuthService {
      * 刷新Token
      */
     String refreshToken(String refreshToken);
+
+    /**
+     * 微信登录
+     */
+    LoginResponse wechatLogin(WechatLoginRequest request);
 }
