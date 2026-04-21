@@ -17,6 +17,7 @@ Thumbs.db
 # Node
 node_modules/
 pc-server/package-lock.json
+pc-server/dist/
 
 # Flutter generated
 mobile/.dart_tool/
