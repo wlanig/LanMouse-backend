@@ -40,8 +40,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtUtil) {
+        return new JwtAuthenticationFilter(jwtUtil);
     }
 
     @Bean
@@ -59,7 +59,7 @@ public class SecurityConfig {
             )
             .formLogin().disable()
             .httpBasic().disable()
-            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter(jwtUtil()), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
