@@ -211,12 +211,22 @@ class TCPServer {
             // 处理不同类型的消息
             switch (data.type) {
                 case 'auth':
-                    // 已经在上面处理
+                case 'connect':
+                    // Flutter 使用 'connect'，兼容处理
+                    client.authenticated = true;
+                    client.name = data.deviceName || client.name;
+                    this.sendToClient(clientId, {
+                        type: 'auth_success',
+                        clientId: clientId
+                    });
+                    log.info(`Client ${clientId} connected as ${client.name}`);
                     break;
 
                 case 'heartbeat':
+                case 'ping':
+                    // Flutter 使用 'ping'，兼容处理
                     this.sendToClient(clientId, {
-                        type: 'heartbeat_ack',
+                        type: data.type === 'ping' ? 'pong' : 'heartbeat_ack',
                         timestamp: Date.now()
                     });
                     break;
@@ -241,6 +251,16 @@ class TCPServer {
 
                 case 'mouse_drag':
                     this.handleMouseDrag(clientId, data);
+                    break;
+
+                case 'touch_start':
+                    // Flutter 触控开始，记录起点
+                    log.debug(`Touch start: x=${data.x}, y=${data.y}`);
+                    break;
+
+                case 'touch_end':
+                    // Flutter 触控结束
+                    log.debug(`Touch end: x=${data.x}, y=${data.y}`);
                     break;
 
                 case 'mouse_position':
