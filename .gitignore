@@ -16,11 +16,23 @@ Thumbs.db
 
 # Node
 node_modules/
-pc-server/node_modules/
+pc-server/package-lock.json
 
-# Flutter
+# Flutter generated
 mobile/.dart_tool/
 mobile/build/
+mobile/.metadata
+mobile/pubspec.lock
+mobile/android/app/src/main/java/
+mobile/android/local.properties
+mobile/ios/Flutter/
+mobile/ios/Runner/GeneratedPluginRegistrant.h
+mobile/ios/Runner/GeneratedPluginRegistrant.m
+mobile/test/
+
+# Python
+__pycache__/
+*.pyc
 
 # Logs
 *.log
