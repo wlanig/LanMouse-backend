@@ -70,7 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(userProvider.errorMessage ?? '注册失败'),
+            content: Text(userProvider.error ?? '注册失败'),
             backgroundColor: AppTheme.errorColor,
           ),
         );

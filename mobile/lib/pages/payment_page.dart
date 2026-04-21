@@ -49,16 +49,16 @@ class _PaymentPageState extends State<PaymentPage> {
 
     try {
       final paymentProvider = context.read<PaymentProvider>();
-      final success = await paymentProvider.createOrder(_selectedDevice!.id!);
+      final order = await paymentProvider.createOrder(_selectedDevice!.deviceId!);
 
       if (!mounted) return;
 
-      if (success) {
+      if (order != null) {
         _startPolling();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(paymentProvider.errorMessage ?? '创建订单失败'),
+            content: Text(paymentProvider.error ?? '创建订单失败'),
             backgroundColor: AppTheme.errorColor,
           ),
         );
@@ -82,14 +82,14 @@ class _PaymentPageState extends State<PaymentPage> {
       await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
 
-      final status = await paymentProvider.checkOrderStatus();
-      if (status == 'paid') {
+      final status = await paymentProvider.checkSubscriptionStatus(_selectedDevice!.deviceId ?? 0);
+      if (status != null && status.subscribed) {
         setState(() => _isPolling = false);
         if (mounted) {
           _showPaymentSuccessDialog();
         }
         return;
-      } else if (status == 'expired' || status == 'cancelled') {
+      } else if (paymentProvider.currentOrder?.isExpired ?? false) {
         setState(() => _isPolling = false);
         return;
       }
@@ -399,8 +399,8 @@ class _PaymentPageState extends State<PaymentPage> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: QrImage(
-              data: order.qrCodeData ?? order.qrCodeUrl ?? '',
+            child: QrImageView(
+              data: order.qrCodeUrl ?? '',
               version: QrVersions.auto,
               size: 250,
             ),

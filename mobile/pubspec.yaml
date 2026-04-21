@@ -36,9 +36,6 @@ dependencies:
   # UI组件
   cupertino_icons: ^1.0.6
   
-  # 身份证验证
-  validate_idcard: ^1.0.0
-  
   # JSON序列化
   json_annotation: ^4.8.1
 

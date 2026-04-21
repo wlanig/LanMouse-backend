@@ -1,9 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import '../models/models.dart';
 import '../services/services.dart';
 
 class TouchpadProvider extends ChangeNotifier {
-  final SocketService _socketService;
+  final SocketService _socketService = SocketService();
 
   // 触控状态
   bool _isTracking = false;
@@ -17,9 +19,7 @@ class TouchpadProvider extends ChangeNotifier {
   DateTime? _lastTapTime;
   Offset? _lastTapPosition;
 
-  TouchpadProvider({
-    required SocketService socketService,
-  }) : _socketService = socketService;
+  TouchpadProvider();
 
   bool get isTracking => _isTracking;
   bool get isScrollMode => _isScrollMode;

@@ -1,6 +1,6 @@
 class AppConfig {
   // API服务器地址
-  static const String apiBaseUrl = 'http://api.lanmouse.com';
+  static const String apiBaseUrl = 'http://localhost:8080';
   
   // API端口
   static const int apiPort = 8080;

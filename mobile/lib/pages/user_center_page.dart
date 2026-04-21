@@ -426,16 +426,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
   }
 
   void _navigateToPayment(DeviceProvider deviceProvider) {
-    if (deviceProvider.currentDevice?.deviceId != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => PaymentPage(
-            deviceId: deviceProvider.currentDevice!.deviceId!,
-          ),
-        ),
-      );
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const PaymentPage(),
+      ),
+    );
   }
 
   void _showDeviceManagement(DeviceProvider deviceProvider) {

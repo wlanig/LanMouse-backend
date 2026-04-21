@@ -3,6 +3,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/models.dart';
 
 class StorageService {
+  static final StorageService _instance = StorageService._internal();
+  static StorageService get instance => _instance;
+  StorageService._internal();
+
   static const String _keyUser = 'user';
   static const String _keyToken = 'token';
   static const String _keyDevices = 'devices';

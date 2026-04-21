@@ -33,8 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final userProvider = context.read<UserProvider>();
       final success = await userProvider.login(
-        _phoneController.text.trim(),
-        _passwordController.text,
+        phone: _phoneController.text.trim(),
+        password: _passwordController.text,
       );
 
       if (!mounted) return;
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(userProvider.errorMessage ?? '登录失败'),
+            content: Text(userProvider.error ?? '登录失败'),
             backgroundColor: AppTheme.errorColor,
           ),
         );

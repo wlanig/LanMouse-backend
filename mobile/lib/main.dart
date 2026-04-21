@@ -25,21 +25,42 @@ void main() async {
   // 初始化服务
   await StorageService.instance.init();
 
-  runApp(const LanMouseApp());
+  // 初始化服务实例
+  final apiService = ApiService();
+  final socketService = SocketService();
+  final discoveryService = DiscoveryService();
+
+  runApp(LanMouseApp(
+    apiService: apiService,
+    socketService: socketService,
+    discoveryService: discoveryService,
+    storageService: StorageService.instance,
+  ));
 }
 
 class LanMouseApp extends StatelessWidget {
-  const LanMouseApp({super.key});
+  final ApiService apiService;
+  final SocketService socketService;
+  final DiscoveryService discoveryService;
+  final StorageService storageService;
+
+  const LanMouseApp({
+    super.key,
+    required this.apiService,
+    required this.socketService,
+    required this.discoveryService,
+    required this.storageService,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => DeviceProvider()),
-        ChangeNotifierProvider(create: (_) => ConnectionProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider(apiService: apiService, storageService: storageService)),
+        ChangeNotifierProvider(create: (_) => DeviceProvider(apiService: apiService, storageService: storageService)),
+        ChangeNotifierProvider(create: (_) => ConnectionProvider(socketService: socketService, discoveryService: discoveryService, storageService: storageService)),
         ChangeNotifierProvider(create: (_) => TouchpadProvider()),
-        ChangeNotifierProvider(create: (_) => PaymentProvider()),
+        ChangeNotifierProvider(create: (_) => PaymentProvider(apiService: apiService)),
       ],
       child: MaterialApp(
         title: 'LanMouse',
@@ -111,7 +132,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // 检查登录状态
     final userProvider = context.read<UserProvider>();
-    await userProvider.checkLoginStatus();
+    await userProvider.init();
 
     if (userProvider.isLoggedIn) {
       Navigator.of(context).pushReplacementNamed('/home');
