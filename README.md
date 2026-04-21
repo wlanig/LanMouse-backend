@@ -1,112 +1,124 @@
-# LanMouse - 手机触控板控制系统
+# LanMouse
 
-一款通过手机模拟笔记本电脑触控板，实现通过网络远程控制PC鼠标的系统。
-
-## 功能特性
-
-- 📱 **跨平台手机App** - 支持Android和iOS
-- 🖱️ **触控板控制** - 单指移动、双指滚动、右键菜单
-- 🌐 **局域网直连** - 无需互联网，通过局域网IP连接
-- 👤 **身份证认证** - 安全可靠的用户身份验证
-- 📅 **年费订阅** - 支持扫码支付续费
-- 👥 **多设备管理** - 一用户可绑定多部手机
-- 💰 **用户分组定价** - 不同用户群体不同收费标准
+手机触控板控制系统 — 用手机控制电脑鼠标，支持移动、点击、滚动、拖拽等操作。
 
 ## 系统架构
 
 ```
-┌─────────────────┐      ┌─────────────────┐
-│   手机端 App     │ ◄──► │   PC端服务端    │
-│  (触控板界面)    │  TCP │  (鼠标控制)     │
-└────────┬────────┘      └────────┬────────┘
-         │                        │
-         │ HTTP/REST               │
-         ▼                        │
-┌─────────────────────────────────┴─────────┐
-│              后端服务器                     │
-│  Spring Boot + MySQL + Redis              │
-└───────────────────────────────────────────┘
+Mobile App (Flutter)  <---TCP:19876--->  PC Server (Electron)
+       |                                        |
+       +----------HTTP/REST----------+----------+
+                                    Backend (Spring Boot)
+                                    MySQL + Redis
 ```
 
-## 技术栈
+| 通信链路 | 协议 | 说明 |
+|----------|------|------|
+| Mobile ↔ Backend | HTTP/REST | 登录注册、设备管理、订阅支付 (`/api/*`) |
+| Mobile ↔ PC Server | TCP (19876) | JSON 消息，鼠标控制、认证握手、心跳 |
+| Mobile → PC Server | UDP (19877) | 局域网服务发现广播 |
+| PC Server → Backend | HTTP | `GET /api/verify/subscription` 验证订阅 |
 
-| 组件 | 技术 |
-|------|------|
-| 手机端 | Flutter |
-| PC端 | Electron + Node.js + Python |
-| 后端 | Spring Boot 2.7 + Java 17 |
-| 数据库 | MySQL 8.0 |
-| 缓存 | Redis |
-
-## 目录结构
+## 项目结构
 
 ```
 LanMouse/
-├── backend/          # 后端服务器 (Spring Boot)
-├── mobile/           # 手机端 (Flutter)
-├── pc-server/        # PC端 (Electron)
-├── docs/             # 文档
-└── README.md
+├── backend/            # Spring Boot 后端
+│   ├── src/            # Java 源码
+│   └── sql/            # 数据库初始化脚本
+├── mobile/             # Flutter 移动端
+│   └── lib/            # Dart 源码
+├── pc-server/          # Electron PC 服务端
+│   ├── main.js         # Electron 主进程
+│   ├── tcp_server.js   # TCP Socket 服务器
+│   ├── mouse_controller.py  # Python 鼠标控制器
+│   └── preload.js      # 安全上下文桥
+└── deploy_package/     # 部署包（与 backend 同步）
 ```
 
 ## 快速开始
 
-### 1. 后端服务器
+### 环境要求
+
+| 组件 | 版本 |
+|------|------|
+| JDK | 17+ |
+| MySQL | 8.0+ |
+| Redis | 6.0+ |
+| Flutter | 3.x (SDK >=3.0.0 <4.0.0) |
+| Node.js | 18+ |
+| Python | 3.7+ |
+
+### Backend
 
 ```bash
 cd backend
-# 创建数据库
+
+# 初始化数据库
 mysql -u root -p < sql/init.sql
-# 启动服务
+
+# 启动（开发模式）
 ./mvnw spring-boot:run
+
+# 或打包运行
+mvn clean package -DskipTests
+java -jar target/lanmouse-backend-1.0.0.jar
 ```
 
-### 2. PC端
-
-```bash
-cd pc-server
-npm install
-npm start
-```
-
-### 3. 手机端
+### Mobile
 
 ```bash
 cd mobile
+
 flutter pub get
-flutter run
+flutter run -d windows    # Windows 桌面
+flutter run               # Android/iOS
+flutter build apk --release
 ```
 
-## API文档
+### PC Server
 
-详见 [docs/API.md](docs/API.md)
+```bash
+cd pc-server
 
-## 数据库设计
+npm install
+npm start                 # 生产模式
+npm run dev               # 开发模式（带日志）
+npm run build             # 打包分发
+```
 
-详见 [docs/DATABASE.md](docs/DATABASE.md)
+## 关键端口
 
-## 部署指南
+| 端口 | 协议 | 用途 |
+|------|------|------|
+| 8080 | HTTP | Backend REST API |
+| 19876 | TCP | PC Server 鼠标控制 Socket |
+| 19877 | UDP | 局域网服务发现广播 |
 
-详见 [docs/DEPLOY.md](docs/DEPLOY.md)
+## 数据库
 
-## 网络协议
+数据库名 `lanmouse`，包含以下表：
 
-### 触控板控制协议 (TCP)
+- `users` — 用户信息
+- `user_groups` — 用户组
+- `devices` — 设备信息
+- `subscriptions` — 订阅记录
+- `payment_qr_codes` — 支付二维码
 
-端口: 19876
+初始化脚本：`backend/sql/init.sql`
+
+## API 响应格式
 
 ```json
-{
-  "type": "mouse_move",
-  "x": 50,
-  "y": 50,
-  "dx": 5,
-  "dy": -3,
-  "button": "left",
-  "timestamp": 1713408000000
-}
+{"code": 0, "msg": "success", "data": {...}}
 ```
 
-## 许可证
+错误码：`0` 成功 | `1xxx` 参数错误 | `2xxx` 认证错误 | `3xxx` 设备错误 | `4xxx` 订单错误 | `5xxx` 权限错误
 
-MIT License
+## 编码规范
+
+- **Java**: Google Java Style Guide, Lombok, camelCase
+- **Dart/Flutter**: Dart Style Guide, PascalCase for widgets
+- **JavaScript**: Airbnb Style Guide, ES6+
+- **Git**: Conventional Commits (`feat:`, `fix:`, `chore:` 等)
+- **分支**: `main`, `develop`, `feature/*`, `fix/*`
