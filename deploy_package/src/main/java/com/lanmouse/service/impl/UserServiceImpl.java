@@ -7,6 +7,7 @@ import com.lanmouse.mapper.UserMapper;
 import com.lanmouse.mapper.UserGroupMapper;
 import com.lanmouse.service.UserService;
 import com.lanmouse.dto.RegisterRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,12 @@ import java.util.regex.Pattern;
  * 用户服务实现
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserGroupMapper userGroupMapper;
     private final BCryptPasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(UserMapper userMapper, UserGroupMapper userGroupMapper, BCryptPasswordEncoder passwordEncoder) {
-        this.userMapper = userMapper;
-        this.userGroupMapper = userGroupMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     // 身份证号权重
     private static final int[] WEIGHT = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};

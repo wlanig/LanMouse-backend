@@ -1,49 +1,65 @@
 package com.lanmouse.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 import java.time.LocalDateTime;
 
+@Data
 @TableName("users")
 public class User {
 
     @TableId(type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 身份证号（明文，用于显示）
+     */
     private String idCard;
+
+    /**
+     * 身份证号哈希（存储校验用）
+     */
     private String idCardHash;
+
+    /**
+     * 真实姓名
+     */
     private String name;
+
+    /**
+     * 手机号（唯一）
+     */
     private String phone;
+
+    /**
+     * 密码哈希（BCrypt加密）
+     */
     private String passwordHash;
+
+    /**
+     * 用户组ID
+     */
     private Integer userGroupId;
-    private String openid;
+
+    /**
+     * 状态：0-禁用 1-正常
+     */
     private Integer status;
 
+    /**
+     * 微信openid（用于微信登录）
+     */
+    private String openid;
+
+    /**
+     * 创建时间
+     */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
+    /**
+     * 更新时间
+     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
-
-    // Getter and Setter
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getIdCard() { return idCard; }
-    public void setIdCard(String idCard) { this.idCard = idCard; }
-    public String getIdCardHash() { return idCardHash; }
-    public void setIdCardHash(String idCardHash) { this.idCardHash = idCardHash; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
-    public Integer getUserGroupId() { return userGroupId; }
-    public void setUserGroupId(Integer userGroupId) { this.userGroupId = userGroupId; }
-    public String getOpenid() { return openid; }
-    public void setOpenid(String openid) { this.openid = openid; }
-    public Integer getStatus() { return status; }
-    public void setStatus(Integer status) { this.status = status; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

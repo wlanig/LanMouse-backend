@@ -1,33 +1,43 @@
 package com.lanmouse.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 import java.math.BigDecimal;
 
+@Data
 @TableName("user_groups")
 public class UserGroup {
 
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private String name;
-    private String code;
-    private BigDecimal annualFee;
-    private BigDecimal discountRate;
-    private String description;
-    private Integer status;
 
-    // Getter and Setter
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
-    public BigDecimal getAnnualFee() { return annualFee; }
-    public void setAnnualFee(BigDecimal annualFee) { this.annualFee = annualFee; }
-    public BigDecimal getDiscountRate() { return discountRate; }
-    public void setDiscountRate(BigDecimal discountRate) { this.discountRate = discountRate; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public Integer getStatus() { return status; }
-    public void setStatus(Integer status) { this.status = status; }
+    /**
+     * 组名称
+     */
+    private String name;
+
+    /**
+     * 组代码
+     */
+    private String code;
+
+    /**
+     * 年费标准价
+     */
+    private BigDecimal annualFee;
+
+    /**
+     * 折扣率(0.00-1.00)
+     */
+    private BigDecimal discountRate;
+
+    /**
+     * 描述
+     */
+    private String description;
+
+    /**
+     * 状态：0-禁用 1-正常
+     */
+    private Integer status;
 }

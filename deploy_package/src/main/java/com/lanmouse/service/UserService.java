@@ -1,7 +1,7 @@
 package com.lanmouse.service;
 
+import com.lanmouse.dto.RegisterRequest;
 import com.lanmouse.entity.User;
-import com.lanmouse.controller.AuthController.RegisterRequest;
 
 import java.util.Map;
 

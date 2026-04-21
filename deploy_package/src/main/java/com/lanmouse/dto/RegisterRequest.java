@@ -1,17 +1,22 @@
 package com.lanmouse.dto;
 
-public class RegisterRequest {
-    private String phone;
-    private String password;
-    private String name;
-    private String idCard;
+import lombok.Data;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getIdCard() { return idCard; }
-    public void setIdCard(String idCard) { this.idCard = idCard; }
+@Data
+public class RegisterRequest {
+
+    @NotBlank(message = "手机号不能为空")
+    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式不正确")
+    private String phone;
+
+    @NotBlank(message = "密码不能为空")
+    private String password;
+
+    @NotBlank(message = "姓名不能为空")
+    private String name;
+
+    @NotBlank(message = "身份证号不能为空")
+    private String idCard;
 }

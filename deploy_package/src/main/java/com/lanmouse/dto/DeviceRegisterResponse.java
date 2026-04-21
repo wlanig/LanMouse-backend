@@ -1,18 +1,15 @@
 package com.lanmouse.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeviceRegisterResponse {
+
     private Long deviceId;
-    private String deviceToken;
-
-    public DeviceRegisterResponse() {}
-    
-    public DeviceRegisterResponse(Long deviceId, String deviceToken) {
-        this.deviceId = deviceId;
-        this.deviceToken = deviceToken;
-    }
-
-    public Long getDeviceId() { return deviceId; }
-    public void setDeviceId(Long deviceId) { this.deviceId = deviceId; }
-    public String getDeviceToken() { return deviceToken; }
-    public void setDeviceToken(String deviceToken) { this.deviceToken = deviceToken; }
+    private String bindToken;
+    private Integer pcServicePort;
 }

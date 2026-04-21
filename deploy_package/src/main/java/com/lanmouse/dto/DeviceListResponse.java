@@ -1,27 +1,26 @@
 package com.lanmouse.dto;
 
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeviceListResponse {
+
     private Long deviceId;
     private String deviceName;
-    private String osType;
+    private String deviceModel;
     private Integer status;
-    private LocalDateTime lastActiveAt;
-    private boolean subscribed;
+    private String lastActiveAt;
+    private SubscriptionInfo subscription;
 
-    public DeviceListResponse() {}
-
-    public Long getDeviceId() { return deviceId; }
-    public void setDeviceId(Long deviceId) { this.deviceId = deviceId; }
-    public String getDeviceName() { return deviceName; }
-    public void setDeviceName(String deviceName) { this.deviceName = deviceName; }
-    public String getOsType() { return osType; }
-    public void setOsType(String osType) { this.osType = osType; }
-    public Integer getStatus() { return status; }
-    public void setStatus(Integer status) { this.status = status; }
-    public LocalDateTime getLastActiveAt() { return lastActiveAt; }
-    public void setLastActiveAt(LocalDateTime lastActiveAt) { this.lastActiveAt = lastActiveAt; }
-    public boolean isSubscribed() { return subscribed; }
-    public void setSubscribed(boolean subscribed) { this.subscribed = subscribed; }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SubscriptionInfo {
+        private String endDate;
+        private String status;
+    }
 }

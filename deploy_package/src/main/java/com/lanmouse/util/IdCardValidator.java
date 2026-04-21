@@ -170,10 +170,37 @@ public class IdCardValidator {
         return idCard.substring(0, 3) + "********" + idCard.substring(idCard.length() - 4);
     }
 
+    /**
+     * 获取身份证归属地
+     *
+     * @param idCard 身份证号
+     * @return 归属地（简化版）
+     */
+    public static String getProvince(String idCard) {
+        if (idCard == null || idCard.length() < 2) {
+            return "未知";
+        }
+
+        String provinceCode = idCard.substring(0, 2);
+        return getProvinceName(provinceCode);
+    }
+
+    /**
+     * 掩码身份证号（脱敏）
+     *
+     * @param idCard 身份证号
+     * @return 掩码后的身份证号
+     */
     public static String maskIdCard(String idCard) {
         return mask(idCard);
     }
 
+    /**
+     * 计算身份证号哈希
+     *
+     * @param idCard 身份证号
+     * @return SHA-256哈希值
+     */
     public static String hashIdCard(String idCard) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -188,21 +215,6 @@ public class IdCardValidator {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 algorithm not found", e);
         }
-    }
-
-    /**
-     * 获取身份证归属地
-     *
-     * @param idCard 身份证号
-     * @return 归属地（简化版）
-     */
-    public static String getProvince(String idCard) {
-        if (idCard == null || idCard.length() < 2) {
-            return "未知";
-        }
-
-        String provinceCode = idCard.substring(0, 2);
-        return getProvinceName(provinceCode);
     }
 
     private static String getProvinceName(String code) {

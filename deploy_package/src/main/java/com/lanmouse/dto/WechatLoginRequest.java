@@ -1,27 +1,32 @@
 package com.lanmouse.dto;
 
+import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
  * 微信登录请求
  */
+@Data
 public class WechatLoginRequest {
-
+    
+    /**
+     * 微信小程序调用wx.login()获取的code
+     */
     @NotBlank(message = "code不能为空")
     private String code;
-
+    
+    /**
+     * 用户昵称（可选）
+     */
     private String nickname;
-
+    
+    /**
+     * 用户头像URL（可选）
+     */
     private String avatarUrl;
 
+    /**
+     * 用户手机号（可选，用于绑定手机号）
+     */
     private String phone;
-
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
-    public String getNickname() { return nickname; }
-    public void setNickname(String nickname) { this.nickname = nickname; }
-    public String getAvatarUrl() { return avatarUrl; }
-    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
 }

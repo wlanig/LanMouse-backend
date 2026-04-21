@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * 认证控制器
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -39,9 +42,10 @@ public class AuthController {
      * POST /api/auth/refresh
      */
     @PostMapping("/refresh")
-    public ApiResponse<String> refresh(@RequestHeader("Authorization") String refreshToken) {
-        String token = authService.refreshToken(refreshToken.replace("Bearer ", ""));
-        return ApiResponse.success(token);
+    public ApiResponse<String> refreshToken(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String newToken = authService.refreshToken(token);
+        return ApiResponse.success(newToken);
     }
 
     /**

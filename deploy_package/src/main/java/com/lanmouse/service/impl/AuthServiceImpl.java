@@ -200,7 +200,7 @@ public class AuthServiceImpl implements AuthService {
                 throw new IllegalArgumentException("用户已被禁用");
             }
 
-            // 更新昵称
+            // 更新昵称和头像
             if (request.getNickname() != null) {
                 user.setName(request.getNickname());
             }

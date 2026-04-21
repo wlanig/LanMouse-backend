@@ -37,7 +37,7 @@ public class DeviceController {
     @PostMapping("/bind")
     public ApiResponse<Void> bind(@Valid @RequestBody BindRequest request) {
         deviceService.bind(request);
-        return ApiResponse.success("绑定成功");
+        return ApiResponse.successMsg("绑定成功");
     }
 
     /**

@@ -19,7 +19,7 @@ public class PaymentController {
     @GetMapping("/callback")
     public ApiResponse<Void> callback(@RequestParam String orderNo) {
         subscriptionService.handlePaymentCallback(orderNo);
-        return ApiResponse.success("回调处理成功");
+        return ApiResponse.successMsg("回调处理成功");
     }
 
     /**
@@ -29,6 +29,6 @@ public class PaymentController {
     @PostMapping("/callback")
     public ApiResponse<Void> callbackPost(@RequestParam String orderNo) {
         subscriptionService.handlePaymentCallback(orderNo);
-        return ApiResponse.success("回调处理成功");
+        return ApiResponse.successMsg("回调处理成功");
     }
 }
