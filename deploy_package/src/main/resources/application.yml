@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: lanmouse-backend
+  main:
+    allow-bean-definition-overriding: true
 
   # MySQL Configuration
   datasource:
@@ -45,6 +47,11 @@ jwt:
   secret: LanMouseSecretKey2026ForJwtTokenGenerationAndValidation
   expiration: 86400000  # 24 hours in milliseconds
   refresh-expiration: 604800000  # 7 days in milliseconds
+
+# Wechat Mini Program Configuration
+wechat:
+  appid: wxcca4b9267e236348
+  secret: 897ffbad567ffa450628999f18531ab9
 
 # Payment Configuration
 payment:
