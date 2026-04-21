@@ -52,10 +52,7 @@
       "icon": "assets/icon.png"
     },
     "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
+      "oneClick": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
     },
