@@ -19,14 +19,10 @@ public class Device {
     private String lastIp;
     private LocalDateTime lastActiveAt;
     private String bindToken;
-    private LocalDateTime bindTokenExpire;
     private Integer status;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
-
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedAt;
 
     // Getter and Setter
     public Long getId() { return id; }
@@ -53,8 +49,11 @@ public class Device {
     public void setLastActiveAt(LocalDateTime lastActiveAt) { this.lastActiveAt = lastActiveAt; }
     public String getBindToken() { return bindToken; }
     public void setBindToken(String bindToken) { this.bindToken = bindToken; }
-    public LocalDateTime getBindTokenExpire() { return bindTokenExpire; }
-    public void setBindTokenExpire(LocalDateTime bindTokenExpire) { this.bindTokenExpire = bindTokenExpire; }
+    public Integer getStatus() { return status; }
+    public void setStatus(Integer status) { this.status = status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+} }
     public Integer getStatus() { return status; }
     public void setStatus(Integer status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }

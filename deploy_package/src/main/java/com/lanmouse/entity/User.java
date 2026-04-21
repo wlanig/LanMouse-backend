@@ -14,6 +14,7 @@ public class User {
     private String phone;
     private String passwordHash;
     private Integer userGroupId;
+    private String openid;
     private Integer status;
 
     @TableField(fill = FieldFill.INSERT)
@@ -37,6 +38,8 @@ public class User {
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
     public Integer getUserGroupId() { return userGroupId; }
     public void setUserGroupId(Integer userGroupId) { this.userGroupId = userGroupId; }
+    public String getOpenid() { return openid; }
+    public void setOpenid(String openid) { this.openid = openid; }
     public Integer getStatus() { return status; }
     public void setStatus(Integer status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }

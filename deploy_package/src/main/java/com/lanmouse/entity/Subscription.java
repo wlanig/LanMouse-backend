@@ -13,17 +13,18 @@ public class Subscription {
     private Long userId;
     private Long deviceId;
     private String orderNo;
-    private Integer userGroupId;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal amount;
     private BigDecimal discountAmount;
     private String paymentMethod;
     private String paymentStatus;
-    private LocalDateTime paidAt;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updatedAt;
 
     // Getter and Setter
     public Long getId() { return id; }
@@ -34,8 +35,6 @@ public class Subscription {
     public void setDeviceId(Long deviceId) { this.deviceId = deviceId; }
     public String getOrderNo() { return orderNo; }
     public void setOrderNo(String orderNo) { this.orderNo = orderNo; }
-    public Integer getUserGroupId() { return userGroupId; }
-    public void setUserGroupId(Integer userGroupId) { this.userGroupId = userGroupId; }
     public LocalDate getStartDate() { return startDate; }
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public LocalDate getEndDate() { return endDate; }
@@ -48,8 +47,8 @@ public class Subscription {
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
     public String getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
-    public LocalDateTime getPaidAt() { return paidAt; }
-    public void setPaidAt(LocalDateTime paidAt) { this.paidAt = paidAt; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

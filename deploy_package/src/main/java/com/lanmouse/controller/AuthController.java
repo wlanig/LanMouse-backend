@@ -43,4 +43,14 @@ public class AuthController {
         String token = authService.refreshToken(refreshToken.replace("Bearer ", ""));
         return ApiResponse.success(token);
     }
+
+    /**
+     * 微信登录
+     * POST /api/auth/wechat-login
+     */
+    @PostMapping("/wechat-login")
+    public ApiResponse<LoginResponse> wechatLogin(@Valid @RequestBody WechatLoginRequest request) {
+        LoginResponse response = authService.wechatLogin(request);
+        return ApiResponse.success(response);
+    }
 }

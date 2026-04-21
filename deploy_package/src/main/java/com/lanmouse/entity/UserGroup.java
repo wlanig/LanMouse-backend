@@ -2,7 +2,6 @@ package com.lanmouse.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @TableName("user_groups")
 public class UserGroup {
@@ -15,12 +14,6 @@ public class UserGroup {
     private BigDecimal discountRate;
     private String description;
     private Integer status;
-
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdAt;
-
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedAt;
 
     // Getter and Setter
     public Integer getId() { return id; }
@@ -37,8 +30,4 @@ public class UserGroup {
     public void setDescription(String description) { this.description = description; }
     public Integer getStatus() { return status; }
     public void setStatus(Integer status) { this.status = status; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
