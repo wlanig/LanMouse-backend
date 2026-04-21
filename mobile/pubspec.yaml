@@ -1,0 +1,56 @@
+name: lanmouse
+description: LanMouse - 手机触控板控制系统
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # 状态管理
+  provider: ^6.1.1
+  
+  # 网络请求
+  http: ^1.1.0
+  
+  # Socket通信
+  socket_io_client: ^2.0.3+1
+  
+  # 本地存储
+  shared_preferences: ^2.2.2
+  
+  # 设备信息
+  device_info_plus: ^9.1.1
+  
+  # 二维码生成
+  qr_flutter: ^4.1.0
+  
+  # 权限处理
+  permission_handler: ^11.1.0
+  
+  # UI组件
+  cupertino_icons: ^1.0.6
+  
+  # 身份证验证
+  validate_idcard: ^1.0.0
+  
+  # JSON序列化
+  json_annotation: ^4.8.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/

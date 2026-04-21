@@ -1,0 +1,78 @@
+{
+  "name": "lanmouse-pc-server",
+  "version": "1.0.0",
+  "description": "LanMouse PC端服务端 - 通过手机触控板控制电脑鼠标",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build": "electron-builder",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [
+    "electron",
+    "mouse",
+    "touchpad",
+    "remote-control"
+  ],
+  "author": "LanMouse Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "electron-log": "^5.0.0",
+    "uuid": "^9.0.0"
+  },
+  "build": {
+    "appId": "com.lanmouse.pcserver",
+    "productName": "LanMouse Server",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "renderer/**/*",
+      "mouse_controller.py",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "mouse_controller.py",
+        "to": "mouse_controller.py"
+      }
+    ]
+  }
+}

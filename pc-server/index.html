@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+    <title>LanMouse 服务端</title>
+    <link rel="stylesheet" href="renderer/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部状态栏 -->
+        <header class="header">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="14" stroke="#4CAF50" stroke-width="2"/>
+                    <circle cx="16" cy="16" r="4" fill="#4CAF50"/>
+                    <path d="M16 4V8M16 24V28M4 16H8M24 16H28" stroke="#4CAF50" stroke-width="2"/>
+                </svg>
+                <h1>LanMouse 服务端</h1>
+            </div>
+            <div class="version" id="appVersion">v1.0.0</div>
+        </header>
+
+        <!-- 服务器状态卡片 -->
+        <section class="card status-card">
+            <div class="card-header">
+                <h2>服务器状态</h2>
+                <span class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">已停止</span>
+                </span>
+            </div>
+            <div class="card-content">
+                <div class="status-row">
+                    <span class="label">监听端口:</span>
+                    <span class="value" id="serverPort">19876</span>
+                </div>
+                <div class="status-row">
+                    <span class="label">连接设备:</span>
+                    <span class="value" id="connectedDevices">0</span>
+                </div>
+                <div class="status-row">
+                    <span class="label">鼠标控制:</span>
+                    <span class="value" id="mouseControllerStatus">初始化中...</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="btn btn-primary" id="toggleServerBtn">
+                    <span class="btn-icon">▶</span>
+                    启动服务
+                </button>
+            </div>
+        </section>
+
+        <!-- 已连接设备列表 -->
+        <section class="card devices-card">
+            <div class="card-header">
+                <h2>已连接设备</h2>
+                <button class="btn btn-small" id="refreshDevicesBtn">刷新</button>
+            </div>
+            <div class="card-content">
+                <div class="devices-list" id="devicesList">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="12" width="32" height="24" rx="2" stroke="#999" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="6" stroke="#999" stroke-width="2"/>
+                        </svg>
+                        <p>暂无连接设备</p>
+                        <small>请使用手机客户端连接</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 设置面板 -->
+        <section class="card settings-card" id="settingsPanel">
+            <div class="card-header">
+                <h2>设置</h2>
+                <button class="btn btn-small btn-icon-only" id="closeSettingsBtn">×</button>
+            </div>
+            <div class="card-content">
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="portInput">服务端口</label>
+                        <input type="number" id="portInput" min="1024" max="65535" value="19876" placeholder="1024-65535">
+                        <small>建议使用默认端口19876</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="passwordInput">连接密码</label>
+                        <input type="password" id="passwordInput" placeholder="留空则不需要密码">
+                        <small>设置密码可防止未授权设备连接</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoStartCheck">
+                            <span>开机自启动</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="startMinimizedCheck">
+                            <span>启动时最小化到托盘</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="debugModeCheck">
+                            <span>开发者模式</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">保存设置</button>
+                        <button type="button" class="btn btn-secondary" id="cancelSettingsBtn">取消</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 底部操作栏 -->
+        <footer class="footer">
+            <button class="btn btn-text" id="openSettingsBtn">
+                <span class="btn-icon">⚙</span>
+                设置
+            </button>
+            <button class="btn btn-text" id="showLogsBtn">
+                <span class="btn-icon">📋</span>
+                查看日志
+            </button>
+        </footer>
+
+        <!-- 日志面板 -->
+        <div class="log-panel" id="logPanel">
+            <div class="log-header">
+                <h3>运行日志</h3>
+                <button class="btn btn-small btn-icon-only" id="closeLogsBtn">×</button>
+            </div>
+            <div class="log-content" id="logContent">
+                <!-- 日志内容将动态添加 -->
+            </div>
+            <div class="log-footer">
+                <button class="btn btn-small" id="clearLogsBtn">清空日志</button>
+                <button class="btn btn-small" id="saveLogsBtn">导出日志</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer/app.js"></script>
+</body>
+</html>

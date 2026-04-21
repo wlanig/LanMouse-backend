@@ -1,0 +1,65 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lanmouse-backend
+  main:
+    allow-bean-definition-overriding: true
+
+  # MySQL Configuration
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lanmouse?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: root
+
+  # Redis Configuration
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+# MyBatis-Plus Configuration
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.lanmouse.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT Configuration
+jwt:
+  secret: LanMouseSecretKey2026ForJwtTokenGenerationAndValidation
+  expiration: 86400000  # 24 hours in milliseconds
+  refresh-expiration: 604800000  # 7 days in milliseconds
+
+# Wechat Mini Program Configuration
+wechat:
+  appid: wxcca4b9267e236348
+  secret: 897ffbad567ffa450628999f18531ab9
+
+# Payment Configuration
+payment:
+  qr-code-expiration-minutes: 30
+  qr-code-base-url: https://api.lanmouse.com/payment/qr/
+
+# Logging
+logging:
+  level:
+    com.lanmouse: debug
+    com.lanmouse.mapper: debug

@@ -1,0 +1,29 @@
+# Build output
+backend/target/
+deploy_package/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+
+# Node
+node_modules/
+pc-server/node_modules/
+
+# Flutter
+mobile/.dart_tool/
+mobile/build/
+
+# Logs
+*.log
+
+# Codebuddy
+.codebuddy/
