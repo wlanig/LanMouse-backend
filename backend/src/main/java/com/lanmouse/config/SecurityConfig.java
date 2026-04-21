@@ -53,7 +53,7 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests(auth -> auth
                 // 公开接口
-                .antMatchers("/api/auth/**", "/api/health", "/login").permitAll()
+                .antMatchers("/api/auth/**", "/api/health", "/api/verify/**", "/api/payment/callback", "/login").permitAll()
                 .antMatchers("/uploads/**").permitAll()
                 .anyRequest().authenticated()
             )
