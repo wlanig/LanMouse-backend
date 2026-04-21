@@ -18,7 +18,7 @@ class TCPServer {
 
         this.server = null;
         this.clients = new Map();
-        this.isRunning = false;
+        this._running = false;
         this.heartbeatInterval = null;
 
         // 屏幕分辨率（从主进程获取）
@@ -33,7 +33,7 @@ class TCPServer {
      * @param {Function} callback - 启动完成回调 (success, error)
      */
     start(callback) {
-        if (this.isRunning) {
+        if (this._running) {
             log.warn('TCP server is already running');
             if (callback) callback(true);
             return;
@@ -46,14 +46,14 @@ class TCPServer {
 
             this.server.on('error', (err) => {
                 log.error('TCP server error:', err);
-                this.isRunning = false;
+                this._running = false;
                 if (this.onError) this.onError(err);
                 if (callback) callback(false, err);
             });
 
             this.server.listen(this.port, '0.0.0.0', () => {
                 log.info(`TCP server listening on port ${this.port}`);
-                this.isRunning = true;
+                this._running = true;
                 
                 // 启动心跳检测
                 this.startHeartbeat();
@@ -63,7 +63,7 @@ class TCPServer {
 
         } catch (err) {
             log.error('Failed to start TCP server:', err);
-            this.isRunning = false;
+            this._running = false;
             if (callback) callback(false, err);
         }
     }
@@ -99,7 +99,7 @@ class TCPServer {
             this.server = null;
         }
 
-        this.isRunning = false;
+        this._running = false;
     }
 
     /**
@@ -445,8 +445,8 @@ class TCPServer {
      * 检查服务器是否正在运行
      * @returns {boolean}
      */
-    isRunningServer() {
-        return this.isRunning;
+    isRunning() {
+        return this._running;
     }
 
     /**
