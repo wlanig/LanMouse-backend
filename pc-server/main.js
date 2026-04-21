@@ -5,6 +5,8 @@
 
 const { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, dialog } = require('electron');
 const path = require('path');
+const dgram = require('dgram');
+const os = require('os');
 const log = require('electron-log');
 const Store = require('electron-store');
 const TCPServer = require('./tcp_server');
@@ -40,6 +42,7 @@ const store = new Store({
 let mainWindow = null;
 let tray = null;
 let tcpServer = null;
+let udpServer = null;
 let mouseController = null;
 let isQuitting = false;
 
@@ -500,6 +503,9 @@ app.whenReady().then(() => {
     // 自动启动TCP服务器
     startTCPServer();
 
+    // 启动UDP发现服务
+    startUDPDiscovery();
+
     // macOS: 点击Dock图标时显示窗口
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
@@ -529,11 +535,69 @@ app.on('before-quit', () => {
         tcpServer.stop();
     }
 
+    // 停止UDP发现服务
+    stopUDPDiscovery();
+
     // 停止鼠标控制器
     if (mouseController) {
         mouseController.stop();
     }
 });
+
+// 启动UDP发现服务
+function startUDPDiscovery() {
+    const discoveryPort = 19877;
+    const tcpPort = store.get('port');
+    const password = store.get('password');
+
+    try {
+        udpServer = dgram.createSocket('udp4');
+
+        udpServer.on('message', (data, remote) => {
+            const message = data.toString().trim();
+            log.debug(`UDP discovery received: "${message}" from ${remote.address}:${remote.port}`);
+
+            if (message === 'LANMOUSE_DISCOVER') {
+                const hostname = os.hostname();
+                const hasPassword = password && password.length > 0 ? '1' : '0';
+                const response = `LANMOUSE|${hostname}|${tcpPort}|${hasPassword}`;
+
+                udpServer.send(response, remote.port, remote.address, (err) => {
+                    if (err) {
+                        log.error('UDP discovery response error:', err.message);
+                    } else {
+                        log.debug(`UDP discovery response sent to ${remote.address}:${remote.port}`);
+                    }
+                });
+            }
+        });
+
+        udpServer.on('error', (err) => {
+            log.error('UDP discovery server error:', err.message);
+            udpServer = null;
+        });
+
+        udpServer.bind(discoveryPort, () => {
+            log.info(`UDP discovery server listening on port ${discoveryPort}`);
+        });
+    } catch (err) {
+        log.error('Failed to start UDP discovery server:', err.message);
+        udpServer = null;
+    }
+}
+
+// 停止UDP发现服务
+function stopUDPDiscovery() {
+    if (udpServer) {
+        log.info('Stopping UDP discovery server...');
+        try {
+            udpServer.close();
+        } catch (e) {
+            log.warn('Error closing UDP server:', e.message);
+        }
+        udpServer = null;
+    }
+}
 
 // 应用退出
 app.on('quit', () => {
