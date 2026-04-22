@@ -36,7 +36,7 @@ class _TouchpadWidgetState extends State<TouchpadWidget> {
           onPointerDown: _handlePointerDown,
           onPointerMove: _handlePointerMove,
           onPointerUp: _handlePointerUp,
-          onPointerCancel: _handlePointerUp,
+          onPointerCancel: _handlePointerCancel,
           child: Container(
             width: double.infinity,
             height: double.infinity,
@@ -136,6 +136,14 @@ class _TouchpadWidgetState extends State<TouchpadWidget> {
   }
 
   void _handlePointerUp(PointerUpEvent event) {
+    _handlePointerEnd();
+  }
+
+  void _handlePointerCancel(PointerCancelEvent event) {
+    _handlePointerEnd();
+  }
+
+  void _handlePointerEnd() {
     final size = context.size;
     if (size != null && _lastPosition != null) {
       final x = (_lastPosition!.dx / size.width) * 100;
