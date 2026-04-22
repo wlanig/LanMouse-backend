@@ -2,6 +2,7 @@
   "name": "lanmouse-pc-server",
   "version": "1.0.0",
   "description": "LanMouse PC端服务端 - 通过手机触控板控制电脑鼠标",
+  "repository": "https://github.com/wlanig/LanMouse-backend",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
