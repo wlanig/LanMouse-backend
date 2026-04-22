@@ -26,6 +26,8 @@ mobile/.metadata
 mobile/pubspec.lock
 mobile/android/app/src/main/java/
 mobile/android/local.properties
+mobile/android/key.properties
+mobile/android/app/lanmouse-release.jks
 mobile/android/.gradle/
 mobile/android/build/
 mobile/android/gradle/
