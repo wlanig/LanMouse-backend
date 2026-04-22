@@ -26,6 +26,11 @@ mobile/.metadata
 mobile/pubspec.lock
 mobile/android/app/src/main/java/
 mobile/android/local.properties
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/gradle/
+mobile/android/gradlew
+mobile/android/gradlew.bat
 mobile/ios/Flutter/
 mobile/ios/Runner/GeneratedPluginRegistrant.h
 mobile/ios/Runner/GeneratedPluginRegistrant.m

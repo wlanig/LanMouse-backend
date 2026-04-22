@@ -1,5 +1,8 @@
 allprojects {
     repositories {
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/google/' }
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/central/' }
         google()
         mavenCentral()
     }
@@ -8,6 +11,11 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.plugins.whenPluginAdded { plugin ->
+        if (plugin.class.name == 'com.android.build.gradle.LibraryPlugin' || plugin.class.name == 'com.android.build.gradle.AppPlugin') {
+            project.android.buildToolsVersion = "34.0.0"
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(':app')
