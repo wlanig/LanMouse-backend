@@ -23,7 +23,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/api/auth/login",
                         "/api/health",
                         "/api/verify/**",
-                        "/api/payment/callback"
+                        "/api/payment/callback",
+                        "/api/admin/login"
                 );
     }
 }

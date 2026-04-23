@@ -24,15 +24,23 @@ public class JwtUtil {
     private long expiration;
 
     /**
-     * 生成Token
+     * 生成Token（普通用户）
      */
     public String generateToken(Long userId, String phone) {
+        return generateToken(userId, phone, "user");
+    }
+
+    /**
+     * 生成Token（指定角色）
+     */
+    public String generateToken(Long userId, String phone, String role) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("phone", phone);
+        claims.put("role", role);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -79,6 +87,18 @@ public class JwtUtil {
     }
 
     /**
+     * 从Token获取角色
+     */
+    public String getRoleFromToken(String token) {
+        try {
+            Claims claims = parseToken(token);
+            return claims.getOrDefault("role", "user").toString();
+        } catch (Exception e) {
+            return "user";
+        }
+    }
+
+    /**
      * 刷新Token
      */
     public String refreshToken(String token) {
@@ -86,7 +106,8 @@ public class JwtUtil {
             Claims claims = parseToken(token);
             Long userId = claims.get("userId", Long.class);
             String phone = claims.get("phone", String.class);
-            return generateToken(userId, phone);
+            String role = claims.getOrDefault("role", "user").toString();
+            return generateToken(userId, phone, role);
         } catch (Exception e) {
             return null;
         }

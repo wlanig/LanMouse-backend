@@ -55,6 +55,12 @@ public class SecurityConfig {
                 // 公开接口
                 .antMatchers("/api/auth/**", "/api/health", "/api/verify/**", "/api/payment/callback", "/login").permitAll()
                 .antMatchers("/uploads/**").permitAll()
+                // 管理后台静态页面 & 登录接口
+                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/api/admin/login").permitAll()
+                // Admin API - 需要管理员角色
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                // 其他接口需要认证
                 .anyRequest().authenticated()
             )
             .formLogin().disable()

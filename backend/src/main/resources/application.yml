@@ -58,6 +58,11 @@ payment:
   qr-code-expiration-minutes: 30
   qr-code-base-url: https://api.lanmouse.com/payment/qr/
 
+# Admin Configuration
+admin:
+  username: admin
+  password: $2a$10$z4cSmSacloldCAOyUITqouQ5JOGBUy1q62YcgPVBC3PrQC6rNYFW2
+
 # Logging
 logging:
   level:
