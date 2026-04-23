@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../config/app_theme.dart';
+import '../config/app_config.dart';
 import '../providers/providers.dart';
 import '../utils/validators.dart';
 
@@ -261,17 +263,32 @@ class _RegisterPageState extends State<RegisterPage> {
                       activeColor: AppTheme.primaryColor,
                     ),
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() => _agreeTerms = !_agreeTerms);
-                        },
-                        child: const Text(
-                          '我已阅读并同意《用户协议》和《隐私政策》',
-                          style: TextStyle(
-                            color: AppTheme.textSecondary,
-                            fontSize: 12,
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          const Text(
+                            '我已阅读并同意',
+                            style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () => launchUrl(Uri.parse('http://${AppConfig.apiBaseUrl}/terms.html')),
+                            child: const Text(
+                              '《用户协议》',
+                              style: TextStyle(color: AppTheme.primaryColor, fontSize: 12),
+                            ),
+                          ),
+                          const Text(
+                            '和',
+                            style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+                          ),
+                          GestureDetector(
+                            onTap: () => launchUrl(Uri.parse('http://${AppConfig.apiBaseUrl}/privacy.html')),
+                            child: const Text(
+                              '《隐私政策》',
+                              style: TextStyle(color: AppTheme.primaryColor, fontSize: 12),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

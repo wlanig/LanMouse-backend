@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../config/app_theme.dart';
+import '../config/app_config.dart';
 import '../providers/providers.dart';
 import 'login_page.dart';
 import 'payment_page.dart';
@@ -333,7 +335,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
           _buildMenuItem(
             icon: Icons.description_outlined,
             title: '用户协议',
-            onTap: () {},
+            onTap: () => launchUrl(Uri.parse('http://${AppConfig.apiBaseUrl}/terms.html')),
+          ),
+          _buildMenuItem(
+            icon: Icons.privacy_tip_outlined,
+            title: '隐私政策',
+            onTap: () => launchUrl(Uri.parse('http://${AppConfig.apiBaseUrl}/privacy.html')),
           ),
         ],
       ),

@@ -38,6 +38,9 @@ dependencies:
   
   # JSON序列化
   json_annotation: ^4.8.1
+  
+  # URL启动器
+  url_launcher: ^6.2.2
 
 dev_dependencies:
   flutter_test:

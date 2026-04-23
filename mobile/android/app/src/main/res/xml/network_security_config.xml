@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true">
+    <!-- 默认禁止明文流量，强制HTTPS -->
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
     </base-config>
+
+    <!-- 允许局域网IP明文通信（TCP鼠标控制/UDP设备发现） -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">192.168.0.0</domain>
+        <domain includeSubdomains="false">10.0.0.0</domain>
+        <domain includeSubdomains="false">172.16.0.0</domain>
+        <domain includeSubdomains="true">lanmouse.com</domain>
+    </domain-config>
+
+    <!-- 允许服务器IP明文通信（后端API，后续可切换HTTPS） -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">120.77.81.144</domain>
+    </domain-config>
 </network-security-config>
