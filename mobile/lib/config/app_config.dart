@@ -1,9 +1,9 @@
 class AppConfig {
   // API服务器地址
-  static const String apiBaseUrl = 'http://localhost:8080';
-  
+  static const String apiBaseUrl = 'http://120.77.81.144';
+
   // API端口
-  static const int apiPort = 8080;
+  static const int apiPort = 80;
   
   // PC服务端默认端口
   static const int pcServicePort = 19876;
